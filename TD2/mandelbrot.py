@@ -5,6 +5,7 @@ from PIL import Image
 from math import log
 from time import time
 import matplotlib.cm
+import matplotlib.pyplot as plt
 
 
 @dataclass
@@ -69,3 +70,4 @@ image = Image.fromarray(np.uint8(matplotlib.cm.plasma(convergence.T)*255))
 fin = time()
 print(f"Temps de constitution de l'image : {fin-deb}")
 image.show()
+image.save("image.png", "PNG")
