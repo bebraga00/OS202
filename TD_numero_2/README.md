@@ -12,6 +12,8 @@ On sait bien que, selon la Loi d'Amdhal on peut obtenir une accélération maxim
 
 Alors selon la Loi d'Amdhal, pour une accélération de 4 fois, il faut avoir n = 6. Ainsi, selon la Loi de Gustafson, S = (ts + 4tp) / (ts + tp) = (0.1t + 3.6t) / (0.1t + 0.9t) = 3.7t. Finalement : S' = (ts + 8tp) / (ts + 2tp) = 
 
+---
+
 ## 1.3) Ensemble de Mandelbrot
 
 ### 1) Répartition Équitable
@@ -29,7 +31,7 @@ On peut alors manipuler la Loi d'Amdhal pour estimer la fraction du code qui est
 
 $$  S = \frac{n}{1+(n-1)f} \Rightarrow  f = \frac{n-s}{s(n-1)}  $$
 
-On trouve donc une fraction d'environ $ f = 21,67\% $
+On trouve donc une fraction d'environ $' f = 21,67\% '$
 
 ### 2) Topologie Maître-esclave
 
