@@ -1,3 +1,4 @@
+---
 # Exercices à Rendre
 
 ## 1.1) Questions du Cours nº1
@@ -8,16 +9,16 @@ Soit l'exemple d'interblockage du premier cours :
 MPI_Comm_rank(comm, &myRank);
 
 if(myRank == 0){
-    MPI_Ssend( sendbuf1, count, MPI_INT, 2, tag, comm);
-    MPI_Recv( recvbuf1, count, MPI_INT, 2, tag, comm, &status);
+    MPI_Ssend(sendbuf1, count, MPI_INT, 2, tag, comm);
+    MPI_Recv(recvbuf1, count, MPI_INT, 2, tag, comm, &status);
 }
 else if(myRank == 1){
-    MPI_Ssend( sendbuf2, count, MPI_INT, 2, tag, comm);
+    MPI_Ssend(sendbuf2, count, MPI_INT, 2, tag, comm);
 }
 else if(myRank == 2){
-    MPI_Recv( recvbuf1, count, MPI_INT, MPI_ANY_SOURCE, tag, comm, &status);
-    MPI_Ssend( sendbuf2, count, MPI_INT, 0, tag, comm);
-    MPI_Recv( recvbuf2, count, MPI_INT, MPI_ANY_SOURCE, tag, comm, &status);
+    MPI_Recv(recvbuf1, count, MPI_INT, MPI_ANY_SOURCE, tag, comm, &status);
+    MPI_Ssend(sendbuf2, count, MPI_INT, 0, tag, comm);
+    MPI_Recv(recvbuf2, count, MPI_INT, MPI_ANY_SOURCE, tag, comm, &status);
 }
 ```
 
@@ -32,7 +33,7 @@ L'ordre de rank 0-1-2 ne pose pas un problème d'interblockage indefinit. Dans c
 
 L'ordre de rank 1-2-0 pose un problème d'interblockage indéfinit. Dans ce cas, le processus 1 envoie un message vers le processus 2, qui le reçoit tout de suite. Ensuite, le processus 2 envoie un message vers le processus 1 et est mis en attente. Enfin, le processus 1 envoie un message vers le processus deux et est mis en attente aussi. 
 
-On peut analyser les six possibilités de permutation entre et on voit que trois parmi eux posent des problèmes. Si on considères ces scénarios équiprobables, la probabilité d'avoir un interblockage est de 50%.
+On peut analyser les six possibilités de permutation entre et on voit que trois parmi eux posent des problèmes. Si on considère ces scénarios équiprobables, la probabilité d'avoir un interblockage est de 50%.
 
 ---
 
@@ -87,5 +88,17 @@ Le code se trouve dans le fichier *mandelbrot_master_slave.py*. Les temps d'exé
 | 4 	| 1,75  |
 
 On en conclure que la topologie maître-esclave est moins efficace dans ce cas car le processus maître ne fait pas le calcul de Mandelbrot, et ses ressources sont alors sous-utilisées vu que le contrôl est léger en ressources.
+
+---
+
+## 1.4) Produit Matrice-Vecteur
+
+### 1) Vecteur par colonne
+
+Le code se trouve dans le fichier *matvec_column.py*.
+
+### 2) Vecteur par ligne
+
+Le code se trouve dans le fichier *matvec_ligne.py*.
 
 ---
