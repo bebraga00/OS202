@@ -1,4 +1,3 @@
----
 # Exercices à Rendre
 
 ## 1.1) Questions du Cours nº1
