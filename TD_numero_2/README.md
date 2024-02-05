@@ -38,7 +38,7 @@ On peut alors manipuler la Loi d'Amdhal pour estimer la fraction du code qui est
 
 $$  S = \frac{n}{1+(n-1)f} \Rightarrow  f = \frac{n-s}{s(n-1)}  $$
 
-On trouve donc une fraction d'environ $' f = 21,67% '$ .
+On trouve donc une fraction d'environ *f = 21,67%*.
 
 ### 2) Topologie Maître-esclave
 
