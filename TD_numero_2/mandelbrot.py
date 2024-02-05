@@ -5,13 +5,17 @@ from PIL import Image
 from math import log
 from time import time
 import matplotlib.cm
-import matplotlib.pyplot as plt
+
 from mpi4py import MPI
 
-Comm = MPI.COMM_WORLD
-size = Comm.size
-rank = Comm.Get_rank()
+# Communication global, default
+globCom = MPI.COMM_WORLD.Dup()
+# Nombre de processus
+nbp     = globCom.size
+# Identifieur de chaque processus
+rank    = globCom.rank
 
+# Definition de l'ensemble de Mandelbrot et ses methodes
 @dataclass
 class MandelbrotSet:
     max_iterations: int
@@ -51,40 +55,40 @@ class MandelbrotSet:
                 return iter
         return self.max_iterations
 
-
 # On peut changer les paramètres des deux prochaines lignes
 mandelbrot_set = MandelbrotSet(max_iterations=50, escape_radius=10)
 width, height = 1024, 1024
 
+# La nouvelle hauteur est divisee entre les processus
+new_height = height // nbp
 scaleX = 3./width
 scaleY = 2.25/height
-# convergence = np.empty((width, height), dtype=np.double)
+convergence = np.empty((width, new_height), dtype=np.double)
+
 # Calcul de l'ensemble de mandelbrot :
 deb = time()
-hmax = height / size
-if rank == 0:
-    offset = rank * hmax
-    convergence = np.empty((width, hmax), dtype=np.double)
-elif rank == 1:
-    offset = rank * hmax
-    convergence = np.empty((width, hmax), dtype=np.double)
-
-
-for y in range(hmax):
+# On calcule une image plus courte pour chaque processus
+offset = rank * new_height
+for y in range(new_height):
     for x in range(width):
-        c = complex(-2. + scaleX*x, -1.125 + scaleY*(y + offset))
-        convergence[x,y] = mandelbrot_set.convergence(c, smooth=True)
-# for y in range(height):
-#     for x in range(width):
-#         c = complex(-2. + scaleX*x, -1.125 + scaleY * y)
-#         convergence[x, y] = mandelbrot_set.convergence(c, smooth=True)
+        c = complex(-2. + scaleX*x, -1.125 + scaleY * (y + offset))
+        convergence[x, y] = mandelbrot_set.convergence(c, smooth=True)
 fin = time()
-print(f"Temps du calcul de l'ensemble de Mandelbrot : {fin-deb}")
+diff = fin - deb
+print(f"Temps du calcul de l'ensemble de Mandelbrot dans le rank", rank, ":", diff)
 
-# Constitution de l'image résultante :
-deb = time()
-image = Image.fromarray(np.uint8(matplotlib.cm.plasma(convergence.T)*255))
-fin = time()
-print(f"Temps de constitution de l'image : {fin-deb}")
-image.show()
-image.save("image.png", "PNG")
+if(rank != 0):
+    globCom.Send(convergence, dest=0)
+    print("Envoye du rank", rank)
+else:
+    for i in range(nbp - 1):
+        received = np.empty((width, new_height), dtype=np.double)
+        globCom.Recv(received, source=(i + 1))
+        print("Recu du rank", i + 1)
+        convergence = np.concatenate((convergence, received), axis=1)
+    deb = time()
+    image = Image.fromarray(np.uint8(matplotlib.cm.plasma(convergence.T)*255))
+    fin = time()
+    print(f"Temps de constitution de l'image : {fin-deb}")
+    img_name = "image.png"
+    image.save(img_name)
