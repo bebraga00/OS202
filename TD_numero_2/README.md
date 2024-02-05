@@ -10,14 +10,21 @@
 
 ## 1.2) Questions du Cours nº2
 
-On sait bien que, selon la Loi d'Amdhal on peut obtenir une accélération maximale de 1/f, où f est la partie du processus qui n'est pas parallélisée. Ainsi, étant donnée f = 10%, on aurait l'accélération maximale S = 1/f = 10. Pour ce jeu de données, si on choisit 5 noeuds de calcul, on pourrait obtenir une accélération d'environ 350%, ce qui semble assez raisonnable en tant que compromis entre la quantité de centres de calcul et l'accélération obtenue.
+On sait bien que, selon la Loi d'Amdhal on peut obtenir une accélération maximale de *1/f*, où *f* est la partie du processus qui n'est pas parallélisée. Ainsi, étant donnée *f = 10%*, on aurait l'accélération maximale :
 
-Alors selon la Loi d'Amdhal, pour une accélération de 4 fois, il faut avoir $ n = 6 $. Ainsi, selon la Loi de Gustafson : 
-$$ S = (ts + 4tp) / (ts + tp) = (0.1t + 3.6t) / (0.1t + 0.9t) = 3.7t $$
+$$ S = 1/f = 10 $$
 
-Finalement :
+Pour ce jeu de données, si on choisit 4 noeuds de calcul, on pourrait obtenir une accélération d'environ 300%, ce qui semble assez raisonnable en tant que compromis entre la quantité de centres de calcul et l'accélération obtenue.
 
-$$ S' = (ts + 8tp) / (ts + 2tp) =  $$
+Selon la Loi d'Amdhal, pour obtenir une accélération de 4 fois, il faut avoir * n = 6 *. Ainsi, selon la Loi de Gustafson : 
+
+$$ S(n) = \frac{t_s+nt_p}{t_s+t_p} \Rightarrow S(4) = \frac{t_s+6t_p}{t_s+t_p} $$
+
+On en obtient *tₛ = 0,4* et *tₚ = 0,6*. Ainsi, pour trouver le nouveau speedup avec le double de données :
+
+$$ S' = \frac{S}{2t_p + t_s} = 2,5 $$
+
+L'accélération maximale qu'Alice peut espérer, dans ce cas, est de 250%.
 
 ---
 
