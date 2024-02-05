@@ -31,11 +31,19 @@ On peut alors manipuler la Loi d'Amdhal pour estimer la fraction du code qui est
 
 $$  S = \frac{n}{1+(n-1)f} \Rightarrow  f = \frac{n-s}{s(n-1)}  $$
 
-On trouve donc une fraction d'environ $' f = 21,67\% '$
+On trouve donc une fraction d'environ $ f = 21,67\% '$.
 
 ### 2) Topologie Maître-esclave
 
+Le code se trouve dans le fichier *mandelbrot_master_slave.py*. Les temps d'exécution trouvés sont : 
+
+| Nombre de processus 	| Temps (s) 	|
+|:---:	|:---:	|
+| 1 	|  -    |
+| 2 	| 3,39  |
+| 3 	| 2,19  |
+| 4 	| 1,75  |
+
+On en conclure que la topologie maître-esclave est moins efficace dans ce cas car le processus maître ne fait pas le calcul de Mandelbrot, et ses ressources sont alors sous-utilisées vu que le contrôl est léger en ressources.
 
 
-
-a

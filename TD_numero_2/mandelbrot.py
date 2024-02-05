@@ -65,7 +65,7 @@ scaleX = 3./width
 scaleY = 2.25/height
 convergence = np.empty((width, new_height), dtype=np.double)
 
-# Calcul de l'ensemble de mandelbrot :
+# Calcul de l'ensemble de mandelbrot 
 deb = time()
 # On calcule une image plus courte pour chaque processus
 offset = rank * new_height
