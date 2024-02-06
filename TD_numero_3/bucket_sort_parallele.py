@@ -35,6 +35,7 @@ if(rank == 0):
         globCom.send(B[i], dest=(i+1))
         print("Sent", B[i], "to rank", i+1)
 
+    # Recevoir et concatener les vecteurs
     A = []
     for i in range(nbp - 1):
         A += globCom.recv(source=i+1)
@@ -45,4 +46,3 @@ else:
     received = globCom.recv(source=0)
     received.sort()
     globCom.send(received, dest=0)
-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
