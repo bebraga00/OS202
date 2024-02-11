@@ -10,11 +10,11 @@ nbp = globCom.size
 rank = globCom.rank
 
 if(nbp == 1):
-    print("Au moins deux processus pour l'architecture maitre-esclave !")
+    print("At least two processes for the master-slave architecture!")
     exit(1)
 
 if(rank == 0):
-    # Creer le tableau aleatoire qui sera trie
+    # create the vector to be sorted
     s = 0
     dim = 10
     max = 100
@@ -22,20 +22,20 @@ if(rank == 0):
     A = np.random.randint(0, max, dim)
     print(A)
 
-    # Creer le tableau pour separer les buckets
+    # create a vector to be sent to the buckets
     B = [[] for _ in range(nbp - 1)]
 
-    # Decider quelles donnees seront envoyees a quel processus
+    # separate the data into the buckets
     for i in range(dim):
         where = ((nbp - 1) * A[i]) // max
         B[where].append(A[i])
 
-    # Envoyer les tableaux aux processus
+    # sent the data to the processes
     for i in range(nbp - 1):
         globCom.send(B[i], dest=(i+1))
         print("Sent", B[i], "to rank", i+1)
 
-    # Recevoir et concatener les vecteurs
+    # receive and append the vectors
     A = []
     for i in range(nbp - 1):
         A += globCom.recv(source=i+1)
