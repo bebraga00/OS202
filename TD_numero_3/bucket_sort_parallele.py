@@ -15,12 +15,12 @@ if(nbp == 1):
 
 if(rank == 0):
     # create the vector to be sorted
+    deb = time()
     s = 0
-    dim = 10
+    dim = 1000
     max = 100
     np.random.seed(s)
     A = np.random.randint(0, max, dim)
-    print(A)
 
     # create a vector to be sent to the buckets
     B = [[] for _ in range(nbp - 1)]
@@ -33,13 +33,13 @@ if(rank == 0):
     # sent the data to the processes
     for i in range(nbp - 1):
         globCom.send(B[i], dest=(i+1))
-        print("Sent", B[i], "to rank", i+1)
 
     # receive and append the vectors
     A = []
     for i in range(nbp - 1):
         A += globCom.recv(source=i+1)
-    print(A)
+    fin = time()
+    print("Total computation time:", (fin - deb))
 
 else:
     received = []
